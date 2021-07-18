@@ -1,0 +1,136 @@
+server {
+	server_name      localhost
+	listen 0.0.0.0:8080
+	root /home/xserg/webserver/directory_for_tests/devAid-v1.1
+
+    location / {
+       root ./
+       index index.html
+       error_page 404 /home/xserg/webserver/custom_errors/404.jpeg
+       client_body_size 50
+    }
+}
+
+server {
+    server_name     post_server
+	listen 0.0.0.0:8080
+
+	root /home/xserg/webserver/directory_for_tests/tournament
+
+    location / {
+        root ./
+        index compete.html
+        allow_methods GET
+    }
+    location /directory/test {
+        root ./delete_dir
+        index   test3.json
+        allow_methods GET POST DELETE
+        client_body_size 100
+    }
+}
+
+server {
+	server_name      tour
+	listen 0.0.0.0:8002
+	root /home/xserg/webserver/directory_for_tests/tournament
+
+    location / {
+       index compete.html
+       error_page custom_error
+       client_body_size 50
+    }
+    location /cgi_test {
+        allow_methods POST
+        root ./cgi_test
+        index result.php
+    }
+    location .php {
+        index    php
+        cgi_dir  /usr/bin
+    }
+    location .py {
+        index python3
+        cgi_dir /usr/local/bin
+    }
+}
+
+server {
+	server_name      fourth_server
+	listen 0.0.0.0:8004
+	root /home/xserg/webserver/directory_for_tests/newsfeed
+
+    location / {
+        root ./
+        index index.html
+        allow_methods GET
+    }
+}
+
+server {
+	listen 0.0.0.0:8443
+
+	server_name      localhost:443
+
+	root /home/xserg/webserver/directory_for_tests
+
+    location / {
+        root ./
+        index index.html
+        listing yes
+        allow_methods GET POST
+    }
+    location /devAid-v1.1 {
+        root ./devAid-v1.1
+        index index.html
+        allow_methods GET POST
+    }
+    location /delete {
+        root ./delete_dir
+        allow_methods GET POST DELETE
+    }
+	error_page custom_error
+	allow_methods GET POST
+}
+
+
+
+server {
+	server_name      redirect_server
+	listen 0.0.0.0:8050
+	root /home/xserg/webserver/directory_for_tests
+
+    location / {
+        root ./
+        redirection http://localhost:8004
+        index index.html
+        allow_methods GET
+    }
+}
+
+server {
+	server_name      cgitest
+	listen 0.0.0.0:8800
+	root /home/xserg/webserver/directory_for_tests/
+
+    location / {
+       index index.html
+       error_page custom_error
+       client_body_size 50
+    }
+    location /cgi_test {
+        allow_methods POST
+        root ./cgi_test
+        index result.php
+    }
+    location .php {
+		allow_methods POST
+        index    php
+        cgi_dir  /usr/bin
+    }
+    location .py {
+		allow_methods POST
+        index python3
+        cgi_dir /usr/bin
+    }
+}
